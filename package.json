@@ -1,0 +1,26 @@
+{
+  "name": "wd-ajax-hero",
+  "version": "1.0.0",
+  "description": "testing for ajax",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stigeweard/wd-ajax-hero.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stigeweard/wd-ajax-hero/issues"
+  },
+  "homepage": "https://github.com/Stigeweard/wd-ajax-hero#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  }
+}

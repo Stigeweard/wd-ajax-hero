@@ -12,28 +12,55 @@
         if (title === '') {
             alert('please type a movie name');
         } else {
-            const request = `http://www.omdbapi.com/?t=${title}&y=&plot=short&r=json`
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', request, true);
-            xhr.onload = function(e) {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        const response = JSON.parse(xhr.response);
-                        if (response.Title === undefined) {
+            const request = `http://www.omdbapi.com/?s=${title}`;
+
+            // // vanilla ajax
+            // let xhr = new XMLHttpRequest();
+            // xhr.open('GET', request, true);
+            // xhr.onload = function(e) {
+            //     if (xhr.readyState === 4) {
+            //         if (xhr.status === 200) {
+            //             const response = JSON.parse(xhr.response);
+            //
+            //             for (var i = 0; i < response.Search.length; i++) {
+            //                 if (response.Search[i].Title === undefined) {
+            //                     alert('invalid movie name')
+            //                 } else {
+            //                     movies.push(response.Search[i]);
+            //                 }
+            //             }
+            //             renderMovies();
+            //
+            //         } else {
+            //             console.error(xhr.statusText);
+            //         }
+            //     }
+            // };
+            // xhr.onerror = function(e) {
+            //     console.error(xhr.statusText);
+            // };
+            // xhr.send(null);
+
+            // // jquery ajax (apparently already parses data on success)
+            $.ajax({
+                url: request,
+                method: 'GET',
+                success: function(data) {
+                    const response = data;
+                    for (let i = 0; i < response.Search.length; i++) {
+                        if (response.Search[i].Title === undefined) {
                             alert('invalid movie name')
                         } else {
-                            movies.push(response);
-                            renderMovies();
+                            movies.push(response.Search[i]);
                         }
-                    } else {
-                        console.error(xhr.statusText);
                     }
+                    renderMovies();
+                },
+                error: function() {
+                    // terrible error message
+                    alert('error!')
                 }
-            };
-            xhr.onerror = function(e) {
-                console.error(xhr.statusText);
-            };
-            xhr.send(null);
+            })
         }
     }
 
@@ -69,13 +96,13 @@
             var $action = $('<div class="card-action center">');
             var $plot = $('<a class="waves-effect waves-light btn modal-trigger">');
 
-            $plot.attr('href', `#${movie.id}`);
+            $plot.attr('href', `#${movie.imdbID}`);
             $plot.text('Plot Synopsis');
 
             $action.append($plot);
             $card.append($action);
 
-            var $modal = $(`<div id="${movie.id}" class="modal">`);
+            var $modal = $(`<div id="${movie.imdbID}" class="modal">`);
             var $modalContent = $('<div class="modal-content">');
             var $modalHeader = $('<h4>').text(movie.Title);
             var $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
@@ -91,4 +118,10 @@
             $('.modal-trigger').leanModal();
         }
     };
+
 })();
+
+// module.exports = {
+//     render: renderMovies,
+//     search: searchMovie
+// };
