@@ -5,11 +5,9 @@
 
     $('#searchButton').click(searchMovie)
 
-
     function searchMovie(e) {
         e.preventDefault();
-        let title = $('#search')[0].value;
-        // console.log(title);
+        let title = $('#search').val();
         if (title === '') {
             alert('please type a movie name');
         } else {
@@ -62,14 +60,9 @@
                 error: function() {
                     // terrible error message
                     alert('error!')
-                },
-                complete: function(){
-                    console.log(movies);
-                    // renderMovies();
                 }
             })
         }
-        console.log(movies);
     }
 
     function ajaxMovie(movie) {
@@ -77,7 +70,6 @@
             url: `http://www.omdbapi.com/?t=${movie.Title}`,
             method: 'GET',
             success: function(data) {
-                // console.log(data);
                 movie['Plot'] = data['Plot']
                 renderMovies()
             },
@@ -91,11 +83,11 @@
     function renderMovies() {
         $('#listings').empty();
 
-        for (var movie of movies) {
-            var $col = $('<div class="col s6">');
-            var $card = $('<div class="card hoverable">');
-            var $content = $('<div class="card-content center">');
-            var $title = $('<h6 class="card-title truncate">');
+        for (let movie of movies) {
+            const $col = $('<div class="col s6">');
+            const $card = $('<div class="card hoverable">');
+            const $content = $('<div class="card-content center">');
+            const $title = $('<h6 class="card-title truncate">');
 
             $title.attr({
                 'data-position': 'top',
@@ -107,7 +99,7 @@
             });
             $title.text(movie.Title);
 
-            var $poster = $('<img class="poster">');
+            const $poster = $('<img class="poster">');
 
             $poster.attr({
                 src: movie.Poster,
@@ -117,8 +109,8 @@
             $content.append($title, $poster);
             $card.append($content);
 
-            var $action = $('<div class="card-action center">');
-            var $plot = $('<a class="waves-effect waves-light btn modal-trigger">');
+            const $action = $('<div class="card-action center">');
+            const $plot = $('<a class="waves-effect waves-light btn modal-trigger">');
 
             $plot.attr('href', `#${movie.imdbID}`);
             $plot.text('Plot Synopsis');
@@ -126,11 +118,11 @@
             $action.append($plot);
             $card.append($action);
 
-            var $modal = $(`<div id="${movie.imdbID}" class="modal">`);
-            var $modalContent = $('<div class="modal-content">');
-            var $modalHeader = $('<h4>').text(movie.Title);
-            var $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
-            var $modalText = $('<p>').text(movie.Plot);
+            const $modal = $(`<div id="${movie.imdbID}" class="modal">`);
+            const $modalContent = $('<div class="modal-content">');
+            const $modalHeader = $('<h4>').text(movie.Title);
+            const $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
+            const $modalText = $('<p>').text(movie.Plot);
             $modalContent.append($modalHeader, $movieYear, $modalText);
             $modal.append($modalContent);
 
