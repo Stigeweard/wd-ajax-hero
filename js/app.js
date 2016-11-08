@@ -8,6 +8,7 @@
     function searchMovie(e) {
         e.preventDefault();
         let title = $('#search').val();
+        $('#search').val('')
         if (title === '') {
             alert('please type a movie name');
         } else {
