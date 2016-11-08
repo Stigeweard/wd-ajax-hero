@@ -5,10 +5,11 @@
 
     $('#searchButton').click(searchMovie)
 
+
     function searchMovie(e) {
         e.preventDefault();
         let title = $('#search')[0].value;
-        $('#search')[0].value = '';
+        // console.log(title);
         if (title === '') {
             alert('please type a movie name');
         } else {
@@ -48,20 +49,43 @@
                 success: function(data) {
                     const response = data;
                     for (let i = 0; i < response.Search.length; i++) {
+
+                        ajaxMovie(response.Search[i]);
+
                         if (response.Search[i].Title === undefined) {
                             alert('invalid movie name')
                         } else {
                             movies.push(response.Search[i]);
                         }
                     }
-                    renderMovies();
                 },
                 error: function() {
                     // terrible error message
                     alert('error!')
+                },
+                complete: function(){
+                    console.log(movies);
+                    // renderMovies();
                 }
             })
         }
+        console.log(movies);
+    }
+
+    function ajaxMovie(movie) {
+        $.ajax({
+            url: `http://www.omdbapi.com/?t=${movie.Title}`,
+            method: 'GET',
+            success: function(data) {
+                // console.log(data);
+                movie['Plot'] = data['Plot']
+                renderMovies()
+            },
+            error: function() {
+                // terrible error message
+                alert('error!')
+            }
+        })
     }
 
     function renderMovies() {
@@ -107,7 +131,6 @@
             var $modalHeader = $('<h4>').text(movie.Title);
             var $movieYear = $('<h6>').text(`Released in ${movie.Year}`);
             var $modalText = $('<p>').text(movie.Plot);
-
             $modalContent.append($modalHeader, $movieYear, $modalText);
             $modal.append($modalContent);
 
